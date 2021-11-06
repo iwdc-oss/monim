@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"monim/server/model/domain"
+	"github.com/iwdc-oss/monim/server/model/domain"
 )
 
 type UserRepository interface {

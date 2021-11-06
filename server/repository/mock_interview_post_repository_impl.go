@@ -3,8 +3,9 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"monim/server/helper"
-	"monim/server/model/domain"
+
+	"github.com/iwdc-oss/monim/server/helper"
+	"github.com/iwdc-oss/monim/server/model/domain"
 )
 
 type MockInterviewPostRepositoryImpl struct{}
