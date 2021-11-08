@@ -1,0 +1,66 @@
+@startuml
+
+entity User {
+    *id : INT
+    --
+    *username : VARCHAR
+    *email : VARCHAR
+    *password : VARCHAR
+    *first_name : VARCHAR
+    last_name : VARCHAR
+    profile_img: VARCHAR
+}
+
+entity Sosmed {
+    *id : INT
+    --
+    *owner_id : INT
+    instagram : VARCHAR
+    facebook : VARCHAR
+    twitter : VARCHAR
+    linkedin : VARCHAR
+    github : VARCHAR
+}
+
+entity Skill {
+    *id : INT
+    --
+    *name : VARCHAR
+}
+
+entity MockInterviewPost {
+    *id : INT
+    --
+    *name : VARCHAR
+    *role : VARCHAR
+    *owner_id : INT
+    logo : VARCHAR
+    description : TEXT
+    agreement : TEXT
+    published_at : DATE
+}
+
+entity WebinarPost {
+    *id : INT
+    --
+    *owner_id : INT
+    *name : VARCHAR
+    banner : VARCHAR
+    description : TEXT
+    published_at : DATE
+}
+
+entity WebinarLabel {
+    *id : INT
+    --
+    *name : VARCHAR
+}
+
+User ||--o| Sosmed : Has
+User }o--o{ Skill : Contains
+User ||--o{ MockInterviewPost : Create
+User ||--o{ WebinarPost : Create
+WebinarPost }o--o{ WebinarLabel : Contains
+User }o--o{ User : Follow
+
+@enduml
