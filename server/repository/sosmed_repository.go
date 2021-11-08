@@ -9,5 +9,5 @@ import (
 type SosmedRepository interface {
 	Create(ctx context.Context, tx *sql.Tx, sosmed domain.Sosmed) domain.Sosmed
 	Update(ctx context.Context, tx *sql.Tx, sosmed domain.Sosmed) domain.Sosmed
-	FindById(ctx context.Context, tx *sql.Tx, id int32) domain.Sosmed
+	FindByID(ctx context.Context, tx *sql.Tx, sosmedID int) domain.Sosmed
 }

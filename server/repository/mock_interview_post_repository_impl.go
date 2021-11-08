@@ -10,7 +10,7 @@ import (
 
 type MockInterviewPostRepositoryImpl struct{}
 
-func NewMockInterviewPostRepositoryImpl() *MockInterviewPostRepositoryImpl {
+func NewMockInterviewPostRepository() MockInterviewPostRepository {
 	return &MockInterviewPostRepositoryImpl{}
 }
 
@@ -22,34 +22,34 @@ func (repository *MockInterviewPostRepositoryImpl) Create(ctx context.Context, t
 	id, err := res.LastInsertId()
 	helper.PanicIfError(err)
 
-	mockInterviewPost.Id = int32(id)
+	mockInterviewPost.ID = int32(id)
 
 	return mockInterviewPost
 }
 
-func (repository *MockInterviewPostRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, id int32) domain.MockInterviewPost {
-	SQL := "SELECT name, role, logo, description, agreement, published_at FROM mock_interview_post WHERE id = ?"
-	rows, err := tx.QueryContext(ctx, SQL)
+func (repository *MockInterviewPostRepositoryImpl) FindByID(ctx context.Context, tx *sql.Tx, MockInterviewPostId int) domain.MockInterviewPost {
+	SQL := "SELECT id, name, role, logo, description, agreement, published_at FROM mock_interview_post WHERE id = ?"
+	rows, err := tx.QueryContext(ctx, SQL, MockInterviewPostId)
 	helper.PanicIfError(err)
+	defer rows.Close()
 
-	mockInterviewPost := domain.MockInterviewPost{}
-	rows.Scan(&mockInterviewPost.Name, &mockInterviewPost.Role, &mockInterviewPost.Logo, &mockInterviewPost.Description, &mockInterviewPost.Agreement, &mockInterviewPost.PublishedAt)
-	mockInterviewPost.Id = id
+	var mockInterviewPost domain.MockInterviewPost
+	rows.Scan(&mockInterviewPost.ID, &mockInterviewPost.Name, &mockInterviewPost.Role, &mockInterviewPost.Logo, &mockInterviewPost.Description, &mockInterviewPost.Agreement, &mockInterviewPost.PublishedAt)
 
 	return mockInterviewPost
-
 }
 
 func (repository *MockInterviewPostRepositoryImpl) FindAll(ctx context.Context, tx *sql.Tx) []domain.MockInterviewPost {
 	SQL := "SELECT id, name, role, logo, description, agreement, published_at FROM mock_interview_post"
 	rows, err := tx.QueryContext(ctx, SQL)
 	helper.PanicIfError(err)
+	defer rows.Close()
 
 	var mockInterviewPostSlice []domain.MockInterviewPost
 	for rows.Next() {
-		mockInterviewPost := domain.MockInterviewPost{}
+		var mockInterviewPost domain.MockInterviewPost
 
-		rows.Scan(&mockInterviewPost.Id, &mockInterviewPost.Name, &mockInterviewPost.Role, &mockInterviewPost.Logo, &mockInterviewPost.Description, &mockInterviewPost.Agreement, &mockInterviewPost.PublishedAt)
+		rows.Scan(&mockInterviewPost.ID, &mockInterviewPost.Name, &mockInterviewPost.Role, &mockInterviewPost.Logo, &mockInterviewPost.Description, &mockInterviewPost.Agreement, &mockInterviewPost.PublishedAt)
 
 		mockInterviewPostSlice = append(mockInterviewPostSlice, mockInterviewPost)
 	}

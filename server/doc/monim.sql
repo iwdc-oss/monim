@@ -2,7 +2,7 @@ SHOW TABLES;
 ALTER TABLE user DROP COLUMN username;
 ALTER TABLE user DROP COLUMN email;
 ALTER TABLE user
-ADD username VARCHAR(30) NOT NULL UNIQUE;
+ADD password VARCHAR(100) NOT NULL;
 ALTER TABLE user
 ADD email VARCHAR(100) NOT NULL UNIQUE;
 -- 
@@ -12,6 +12,7 @@ CREATE TABLE user (
     email varchar(100) NOT NULL UNIQUE,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100),
+    password VARCHAR(100) NOT NULL,
     profile_image VARCHAR(2000),
     PRIMARY KEY (id)
 ) ENGINE = InnoDB;

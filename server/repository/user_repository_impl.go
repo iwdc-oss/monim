@@ -3,13 +3,14 @@ package repository
 import (
 	"context"
 	"database/sql"
+
 	"github.com/iwdc-oss/monim/server/helper"
 	"github.com/iwdc-oss/monim/server/model/domain"
 )
 
 type UserRepositoryImpl struct{}
 
-func NewUserRepositoryImpl() *UserRepositoryImpl {
+func NewUserRepository() UserRepository {
 	return &UserRepositoryImpl{}
 }
 
@@ -21,27 +22,28 @@ func (repository *UserRepositoryImpl) Create(ctx context.Context, tx *sql.Tx, us
 	id, err := res.LastInsertId()
 	helper.PanicIfError(err)
 
-	user.Id = int32(id)
+	user.ID = int32(id)
 
 	return user
 }
 
 func (repository *UserRepositoryImpl) Update(ctx context.Context, tx *sql.Tx, user domain.User) domain.User {
 	SQL := "UPDATE user SET username = ?, email = ?, first_name = ?, last_name = ?, profile_image = ? WHERE id = ?"
-	_, err := tx.ExecContext(ctx, SQL, user.Username, user.Email, user.FirstName, user.LastName, user.ProfileImage)
+	_, err := tx.ExecContext(ctx, SQL, user.Username, user.Email, user.FirstName, user.LastName, user.ProfileImage, user.ID)
 	helper.PanicIfError(err)
 
 	return user
 }
 
-func (repository *UserRepositoryImpl) FindById(ctx context.Context, tx *sql.Tx, id int32) domain.User {
-	SQL := "SELECT username, email, first_name, last_name, profile_image FROM user WHERE id = ? LIMIT 1"
+func (repository *UserRepositoryImpl) FindByID(ctx context.Context, tx *sql.Tx, userID int) domain.User {
+	SQL := "SELECT id, username, email, first_name, last_name, profile_image FROM user WHERE id = ? LIMIT 1"
 
-	rows, err := tx.QueryContext(ctx, SQL, id)
+	rows, err := tx.QueryContext(ctx, SQL, userID)
 	helper.PanicIfError(err)
+	defer rows.Close()
 
-	user := domain.User{}
-	err = rows.Scan(&user.Username, &user.Email, &user.FirstName, &user.LastName, &user.ProfileImage)
+	var user domain.User
+	err = rows.Scan(&user.ID, &user.Username, &user.Email, &user.FirstName, &user.LastName, &user.ProfileImage)
 	helper.PanicIfError(err)
 
 	return user
@@ -52,8 +54,9 @@ func (repository *UserRepositoryImpl) FindByUsernameAndPassword(ctx context.Cont
 
 	rows, err := tx.QueryContext(ctx, SQL, user.Username, user.Password)
 	helper.PanicIfError(err)
+	defer rows.Close()
 
-	err = rows.Scan(&user.Id, &user.Username, &user.Email, &user.FirstName, &user.LastName, &user.ProfileImage)
+	err = rows.Scan(&user.ID, &user.Username, &user.Email, &user.FirstName, &user.LastName, &user.ProfileImage)
 	helper.PanicIfError(err)
 
 	return user

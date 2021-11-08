@@ -1,7 +1,7 @@
 package domain
 
 type Sosmed struct {
-	Id        int32
+	ID        int32
 	Instagram string
 	Facebook  string
 	Twitter   string

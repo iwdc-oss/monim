@@ -9,6 +9,6 @@ import (
 type UserRepository interface {
 	Create(ctx context.Context, tx *sql.Tx, user domain.User) domain.User
 	Update(ctx context.Context, tx *sql.Tx, user domain.User) domain.User
-	FindById(ctx context.Context, tx *sql.Tx, id int32) domain.User
+	FindByID(ctx context.Context, tx *sql.Tx, userID int) domain.User
 	FindByUsernameAndPassword(ctx context.Context, tx *sql.Tx, user domain.User) domain.User
 }

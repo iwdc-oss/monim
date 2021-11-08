@@ -9,6 +9,6 @@ import (
 
 type MockInterviewPostRepository interface {
 	Create(ctx context.Context, tx *sql.Tx, mockInterviewPost domain.MockInterviewPost) domain.MockInterviewPost
-	FindById(ctx context.Context, tx *sql.Tx, id int32) domain.MockInterviewPost
+	FindByID(ctx context.Context, tx *sql.Tx, MockInterviewPostID int) domain.MockInterviewPost
 	FindAll(ctx context.Context, tx *sql.Tx) []domain.MockInterviewPost
 }

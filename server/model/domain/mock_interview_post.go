@@ -3,7 +3,7 @@ package domain
 import "time"
 
 type MockInterviewPost struct {
-	Id          int32
+	ID          int32
 	Name        string
 	Role        string
 	Logo        string

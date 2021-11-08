@@ -1,6 +1,6 @@
 package domain
 
 type WebinarLabel struct {
-	Id   int32
+	ID   int32
 	Name string
 }
