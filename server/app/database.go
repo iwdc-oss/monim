@@ -2,11 +2,16 @@ package app
 
 import (
 	"database/sql"
+	"os"
 	"time"
 )
 
 func NewDB() *sql.DB {
-	DB, err := sql.Open("mysql", "root:S@kha7800@tcp(localhost:3306)/monim?parseTime=true")
+
+	NAME := os.Getenv("DB_NAME")
+	PASSWORD := os.Getenv("DB_PASSWORD")
+
+	DB, err := sql.Open("mysql", NAME+":"+PASSWORD+"@tcp(localhost:3306)/monim?parseTime=true")
 
 	if err != nil {
 		panic(err)
